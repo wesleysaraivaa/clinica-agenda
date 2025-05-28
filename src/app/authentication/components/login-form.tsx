@@ -1,5 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -20,32 +22,47 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
 
 const loginSchema = z.object({
-  name: z.string().trim().min(1, { message: "Nome de usuário é obrigatório" }),
   email: z
     .string()
     .trim()
-    .min(1, { message: "Email é obrigatório" })
-    .email({ message: "Email inválido" }),
+    .min(1, { message: "E-mail é obrigatório" })
+    .email({ message: "E-mail inválido" }),
   password: z
     .string()
     .trim()
-    .min(8, { message: "Senha deve ter no mínimo 8 caracteres" }),
+    .min(8, { message: "A senha deve ter pelo menos 8 caracteres" }),
 });
 
 const LoginForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    await authClient.signIn.email(
+      {
+        email: values.email,
+        password: values.password,
+      },
+      {
+        onSuccess: () => {
+          router.push("/dashboard");
+          console.log("Login bem-sucedido");
+        },
+        onError: () => {
+          toast.error("Email ou senha inválidos");
+          console.log("Erro ao fazer login");
+        },
+      },
+    );
   }
 
   return (
@@ -85,7 +102,17 @@ const LoginForm = () => {
             />
           </CardContent>
           <CardFooter>
-            <Button type="submit">Criar conta</Button>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? (
+                <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              ) : (
+                "Login"
+              )}
+            </Button>
           </CardFooter>
         </form>
       </Form>

@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,9 @@ const SignUpForm = () => {
       {
         onSuccess: () => {
           router.push("/dashboard");
+        },
+        onError: () => {
+          toast.error("Email ja cadastrado");
         },
       },
     );
@@ -120,10 +124,11 @@ const SignUpForm = () => {
               className="w-full"
               disabled={form.formState.isSubmitting}
             >
-              {form.formState.isSubmitting && (
+              {form.formState.isSubmitting ? (
                 <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              ) : (
+                "Criar conta"
               )}
-              Criar conta
             </Button>
           </CardFooter>
         </form>
