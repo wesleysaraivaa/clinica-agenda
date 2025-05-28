@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -63,7 +65,9 @@ const SignUpForm = () => {
         onError: (ctx) => {
           if (ctx.error.code === "USER_ALREADY_EXISTS") {
             toast.error("Email ja cadastrado");
+            return;
           }
+          toast.error("Erro ao criar conta");
         },
       },
     );
