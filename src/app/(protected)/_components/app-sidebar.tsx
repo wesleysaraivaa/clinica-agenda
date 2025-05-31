@@ -44,7 +44,7 @@ const items = [
     icon: CalendarDays,
   },
   {
-    title: "Medicos",
+    title: "Médicos",
     url: "/doctors",
     icon: Stethoscope,
   },
@@ -109,12 +109,10 @@ export function AppSidebar() {
                   </Avatar>
                   <div>
                     <p className="text-sm">
-                      {" "}
-                      {session.data?.user.clinic?.name}{" "}
+                      {session.data?.user?.clinic?.name}
                     </p>
-                    <p className="text-muted-foregroundm text-sm">
-                      {" "}
-                      {session.data?.user.email}{" "}
+                    <p className="text-muted-foreground text-sm">
+                      {session.data?.user.email}
                     </p>
                   </div>
                 </SidebarMenuButton>
