@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/page-container";
 import { auth } from "@/lib/auth";
 
+import AddDoctorButton from "./_components/add-doctor-button";
+
 const DoctorsPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -30,9 +32,12 @@ const DoctorsPage = async () => {
           <PageTitle>Médicos</PageTitle>
           <PageDescription>Gerencie os médicos da sua clínica</PageDescription>
         </PageHeaderContent>
-        <PageActions> SIM </PageActions>
+        <PageActions>
+          <AddDoctorButton />
+        </PageActions>
       </PageHeader>
-      <PageContent> NAO </PageContent>
+
+      <PageContent> Médicos </PageContent>
     </PageContainer>
   );
 };
