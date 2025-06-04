@@ -35,6 +35,10 @@ import {
 
 import { medicalSpecialties } from "../_constants";
 
+interface UpsertDoctorFormProps {
+  onSuccess: () => void;
+}
+
 const formSchema = z
   .object({
     name: z.string().trim().min(1, {
@@ -43,7 +47,7 @@ const formSchema = z
     specialty: z.string().trim().min(1, {
       message: "Especialidade é obrigatória.",
     }),
-    appointmentPrice: z.coerce.number().min(1, {
+    appointmentPrice: z.number().min(1, {
       message: "Preço da consulta é obrigatório.",
     }),
     availableFromWeekDay: z.string(),
@@ -66,11 +70,7 @@ const formSchema = z
     },
   );
 
-interface UpsertDoctorFormProps {
-  onSuccess?: () => void;
-}
-
-const UpsertDoctorForm = () => {
+const UpsertDoctorForm = ({ onSuccess }: UpsertDoctorFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -86,11 +86,11 @@ const UpsertDoctorForm = () => {
 
   const upsertDoctorAction = useAction(upsertDoctor, {
     onSuccess: () => {
-      toast.success("Médico adicionado com sucesso.");
-      onSuccess?.();
+      toast.success("Médico adicionado com sucesso");
+      onSuccess();
     },
     onError: () => {
-      toast.error("Erro ao adicionar médico.");
+      toast.error("Erro ao adicionar médico");
     },
   });
 
@@ -389,6 +389,3 @@ const UpsertDoctorForm = () => {
 };
 
 export default UpsertDoctorForm;
-function onSuccess() {
-  throw new Error("Function not implemented.");
-}
