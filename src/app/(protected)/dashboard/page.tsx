@@ -2,8 +2,17 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
+import {
+  PageActions,
+  PageContainer,
+  PageContent,
+  PageDescription,
+  PageHeader,
+  PageHeaderContent,
+  PageTitle,
+} from "@/components/ui/page-container";
+import { DatePicker } from "./_components/date-picker";
 
-import SignOutButton from "./_components/sign-out-button";
 
 const DashboardPage = async () => {
   const session = await auth.api.getSession({
@@ -19,11 +28,24 @@ const DashboardPage = async () => {
   }
 
   return (
-    <div className="container flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <h1 className="text-3xl font-bold">{session?.user?.name}</h1>
-      <h1 className="text-3xl font-bold">{session?.user?.email}</h1>
-      <SignOutButton />
-    </div>
+   
+      <PageContainer>
+        <PageHeader>
+          <PageHeaderContent>
+            <PageTitle>Dashboard</PageTitle>
+            <PageDescription>
+              Tenha uma visão geral da sua clínica.
+            </PageDescription>
+          </PageHeaderContent>
+          <PageActions>
+            <DatePicker />
+          </PageActions>
+        </PageHeader>
+        <PageContent>
+          <></>
+        </PageContent>
+      </PageContainer>
+    
   );
 };
 
