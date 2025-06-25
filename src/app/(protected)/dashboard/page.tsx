@@ -16,6 +16,12 @@ import { DatePicker } from "./_components/date-picker";
 import { getDashboard } from "@/data/get-dashboard";
 import dayjs from "dayjs";
 import StatsCards from "./_components/stats-cards";
+import WithAuthentication from "@/hocs/with-authentication";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar } from "lucide-react";
+import { appointmentsTableColumns } from "../appointments/_components/table-columns";
+import { DataTable } from "@/components/ui/data-table";
+import TopDoctors from "./_components/top-doctors";
 
 interface DashboardPageProps {
   searchParams: Promise<{
@@ -56,7 +62,7 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
   });
 
   return (
-      <PageContainer>
+          <PageContainer>
         <PageHeader>
           <PageHeaderContent>
             <PageTitle>Dashboard</PageTitle>
@@ -77,8 +83,26 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
             totalPatients={totalPatients.total}
             totalDoctors={totalDoctors.total}
           />
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <Calendar className="text-muted-foreground" />
+                  <CardTitle className="text-base">
+                    Agendamentos de hoje
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <DataTable
+                  columns={appointmentsTableColumns}
+                  data={todayAppointments}
+                />
+              </CardContent>
+            </Card>
+            <TopDoctors doctors={topDoctors} />
         </PageContent>
       </PageContainer>
+      
     
   );
 };
