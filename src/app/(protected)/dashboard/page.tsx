@@ -1,7 +1,10 @@
+import dayjs from "dayjs";
+import { Calendar } from "lucide-react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { auth } from "@/lib/auth";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataTable } from "@/components/ui/data-table";
 import {
   PageActions,
   PageContainer,
@@ -11,19 +14,16 @@ import {
   PageHeaderContent,
   PageTitle,
 } from "@/components/ui/page-container";
-import { DatePicker } from "./_components/date-picker";
-
 import { getDashboard } from "@/data/get-dashboard";
-import dayjs from "dayjs";
-import StatsCards from "./_components/stats-cards";
 import WithAuthentication from "@/hocs/with-authentication";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar } from "lucide-react";
+import { auth } from "@/lib/auth";
+
 import { appointmentsTableColumns } from "../appointments/_components/table-columns";
-import { DataTable } from "@/components/ui/data-table";
+import AppointmentsChart from "./_components/appointments-chart";
+import { DatePicker } from "./_components/date-picker";
+import StatsCards from "./_components/stats-cards";
 import TopDoctors from "./_components/top-doctors";
 import TopSpecialties from "./_components/top-specialties";
-import AppointmentsChart from "./_components/appointments-chart";
 
 interface DashboardPageProps {
   searchParams: Promise<{
@@ -64,7 +64,8 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
   });
 
   return (
-          <PageContainer>
+    <WithAuthentication>
+      <PageContainer>
         <PageHeader>
           <PageHeaderContent>
             <PageTitle>Dashboard</PageTitle>
@@ -86,8 +87,8 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
             totalDoctors={totalDoctors.total}
           />
           <div className="grid grid-cols-[2.25fr_1fr] gap-4">
-            <TopDoctors doctors={topDoctors} />
             <AppointmentsChart dailyAppointmentsData={dailyAppointmentsData} />
+            <TopDoctors doctors={topDoctors} />
           </div>
           <div className="grid grid-cols-[2.25fr_1fr] gap-4">
             <Card>
@@ -107,11 +108,10 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
               </CardContent>
             </Card>
             <TopSpecialties topSpecialties={topSpecialties} />
-            </div>
+          </div>
         </PageContent>
       </PageContainer>
-      
-    
+    </WithAuthentication>
   );
 };
 
