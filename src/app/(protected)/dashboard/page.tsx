@@ -22,6 +22,7 @@ import { Calendar } from "lucide-react";
 import { appointmentsTableColumns } from "../appointments/_components/table-columns";
 import { DataTable } from "@/components/ui/data-table";
 import TopDoctors from "./_components/top-doctors";
+import TopSpecialties from "./_components/top-specialties";
 
 interface DashboardPageProps {
   searchParams: Promise<{
@@ -83,6 +84,10 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
             totalPatients={totalPatients.total}
             totalDoctors={totalDoctors.total}
           />
+          <div className="grid grid-cols-[2.25fr_1fr] gap-4">
+            <TopDoctors doctors={topDoctors} />
+            <TopSpecialties topSpecialties={topSpecialties} />
+          </div>
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-3">
