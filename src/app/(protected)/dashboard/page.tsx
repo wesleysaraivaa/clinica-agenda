@@ -23,6 +23,7 @@ import { appointmentsTableColumns } from "../appointments/_components/table-colu
 import { DataTable } from "@/components/ui/data-table";
 import TopDoctors from "./_components/top-doctors";
 import TopSpecialties from "./_components/top-specialties";
+import AppointmentsChart from "./_components/appointments-chart";
 
 interface DashboardPageProps {
   searchParams: Promise<{
@@ -86,8 +87,9 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
           />
           <div className="grid grid-cols-[2.25fr_1fr] gap-4">
             <TopDoctors doctors={topDoctors} />
-            <TopSpecialties topSpecialties={topSpecialties} />
+            <AppointmentsChart dailyAppointmentsData={dailyAppointmentsData} />
           </div>
+          <div className="grid grid-cols-[2.25fr_1fr] gap-4">
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-3">
@@ -104,7 +106,8 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
                 />
               </CardContent>
             </Card>
-            <TopDoctors doctors={topDoctors} />
+            <TopSpecialties topSpecialties={topSpecialties} />
+            </div>
         </PageContent>
       </PageContainer>
       
