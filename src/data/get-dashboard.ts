@@ -17,6 +17,11 @@ interface Params {
 }
 
 export const getDashboard = async ({ from, to, session }: Params) => {
+  // Verificação de segurança
+  if (!session?.user?.clinic?.id) {
+    throw new Error("Clínica não encontrada para o usuário");
+  }
+
   const chartStartDate = dayjs().subtract(10, "days").startOf("day").toDate();
   const chartEndDate = dayjs().add(10, "days").endOf("day").toDate();
   const [

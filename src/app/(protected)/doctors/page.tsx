@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/page-container";
 import { db } from "@/db";
 import { doctorsTable } from "@/db/schema";
+import WithAuthentication from "@/hocs/with-authentication";
 import { auth } from "@/lib/auth";
 
 import AddDoctorButton from "./_components/add-doctor-button";
@@ -27,25 +28,29 @@ const DoctorsPage = async () => {
   });
 
   return (
-    <PageContainer>
-      <PageHeader>
-        <PageHeaderContent>
-          <PageTitle>Médicos</PageTitle>
-          <PageDescription>Gerencie os médicos da sua clínica</PageDescription>
-        </PageHeaderContent>
-        <PageActions>
-          <AddDoctorButton />
-        </PageActions>
-      </PageHeader>
+    <WithAuthentication mustHaveClinic mustHavePlan>
+      <PageContainer>
+        <PageHeader>
+          <PageHeaderContent>
+            <PageTitle>Médicos</PageTitle>
+            <PageDescription>
+              Gerencie os médicos da sua clínica
+            </PageDescription>
+          </PageHeaderContent>
+          <PageActions>
+            <AddDoctorButton />
+          </PageActions>
+        </PageHeader>
 
-      <PageContent>
-        <div className="grid grid-cols-3 gap-6">
-          {doctors.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor} />
-          ))}
-        </div>
-      </PageContent>
-    </PageContainer>
+        <PageContent>
+          <div className="grid grid-cols-3 gap-6">
+            {doctors.map((doctor) => (
+              <DoctorCard key={doctor.id} doctor={doctor} />
+            ))}
+          </div>
+        </PageContent>
+      </PageContainer>
+    </WithAuthentication>
   );
 };
 

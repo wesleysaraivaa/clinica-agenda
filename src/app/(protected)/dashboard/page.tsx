@@ -36,12 +36,25 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+
+  // Verificação específica para clínica
+  if (!session?.user?.clinic?.id) {
+    redirect("/clinic-form");
+  }
+
   const { from, to } = await searchParams;
   if (!from || !to) {
     redirect(
       `/dashboard?from=${dayjs().format("YYYY-MM-DD")}&to=${dayjs().add(1, "month").format("YYYY-MM-DD")}`,
     );
   }
+
+  // Verificação adicional da estrutura da sessão
+  const clinicId = session.user.clinic.id;
+  if (!clinicId) {
+    redirect("/clinic-form");
+  }
+
   const {
     totalRevenue,
     totalAppointments,
@@ -57,14 +70,14 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
     session: {
       user: {
         clinic: {
-          id: session!.user.clinic!.id,
+          id: clinicId,
         },
       },
     },
   });
 
   return (
-    <WithAuthentication>
+    <WithAuthentication mustHaveClinic mustHavePlan>
       <PageContainer>
         <PageHeader>
           <PageHeaderContent>
